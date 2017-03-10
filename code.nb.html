@@ -190,6 +190,12 @@ $(document).ready(function () {
 <li><a href="#only-covariates-penalty-1">Only covariates + penalty</a></li>
 <li><a href="#covariates-propensity-score-penalty-1">Covariates + propensity score + penalty</a></li>
 </ul></li>
+<li><a href="#model-missing-x2">Model (missing x2)</a><ul>
+<li><a href="#only-propensity-score-2">Only propensity score</a></li>
+<li><a href="#only-covariates-2">Only covariates</a></li>
+<li><a href="#only-covariates-penalty-2">Only covariates + penalty</a></li>
+<li><a href="#covariates-propensity-score-penalty-2">Covariates + propensity score + penalty</a></li>
+</ul></li>
 <li><a href="#resources">Resources</a></li>
 </ul></li>
 </ul>
@@ -205,7 +211,7 @@ $(document).ready(function () {
 <h2>Generate data</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubiA8LSAxMDAwMFxuI2Fzc29jaXRlZCB3aXRoIGV4cG9zdXJlICYgb3V0Y29tZVxueDEgPC0gcm5vcm0obiwwLDEpXG54MiA8LSByYmlub20obiwxLC41KVxuI2Fzc29jaWF0ZWQgd2l0aCBvdXRjb21lIG9ubHlcbngzIDwtIHJub3JtKG4sMCwxKVxueDQgPC0gcmJpbm9tKG4sMSwuNSlcbiNhc3NvY2lhdGVkIHdpdGggZXhwb3N1cmUgb25seVxueDUgPC0gcm5vcm0obiwwLDEpXG4jaW5kZXBlbmRlbnRcbng2IDwtIHJub3JtKG4sIDAsIDEpXG4jZXhwb3N1cmVcbnpfbG9naXQgPC0gLTAuNSArIHgxICsgeDIgKyB4NVxuel9wIDwtIGV4cCh6X2xvZ2l0KS8oMStleHAoel9sb2dpdCkpXG56IDwtIHJiaW5vbShuLDEsel9wKVxuI291dGNvbWVcbnlfbG9naXQgPC0gLTEgKyB4MSArIHgyICsgeDMgKyB4NCArIDEuMjUgKiB6XG55X3AgPC0gZXhwKHlfbG9naXQpLygxK2V4cCh5X2xvZ2l0KSlcbnkgPC0gcmJpbm9tKG4sMSx5X3ApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubiA8LSAxMDAwMFxuI2Fzc29jaXRlZCB3aXRoIGV4cG9zdXJlICYgb3V0Y29tZVxueDEgPC0gcm5vcm0obiwwLDEpXG54MiA8LSByYmlub20obiwxLC41KVxuI2Fzc29jaWF0ZWQgd2l0aCBvdXRjb21lIG9ubHlcbngzIDwtIHJub3JtKG4sMCwxKVxueDQgPC0gcmJpbm9tKG4sMSwuNSlcbiNhc3NvY2lhdGVkIHdpdGggZXhwb3N1cmUgb25seVxueDUgPC0gcm5vcm0obiwwLDEpXG4jaW5kZXBlbmRlbnRcbng2IDwtIHJub3JtKG4sIDAsIDEpXG4jZXhwb3N1cmVcbnpfbG9naXQgPC0gLTAuNSArIHgxICsgeDIgKyB4NVxuel9wIDwtIGV4cCh6X2xvZ2l0KS8oMStleHAoel9sb2dpdCkpXG56IDwtIHJiaW5vbShuLDEsel9wKVxuI291dGNvbWVcbnlfbG9naXQgPC0gLTEgKyB4MSArIHgyICsgeDMgKyB4NCArIDEgKiB6XG55X3AgPC0gZXhwKHlfbG9naXQpLygxK2V4cCh5X2xvZ2l0KSlcbnkgPC0gcmJpbm9tKG4sMSx5X3ApXG5gYGAifQ== -->
 <pre class="r"><code>n &lt;- 10000
 #associted with exposure &amp; outcome
 x1 &lt;- rnorm(n,0,1)
@@ -222,7 +228,7 @@ z_logit &lt;- -0.5 + x1 + x2 + x5
 z_p &lt;- exp(z_logit)/(1+exp(z_logit))
 z &lt;- rbinom(n,1,z_p)
 #outcome
-y_logit &lt;- -1 + x1 + x2 + x3 + x4 + 1.25 * z
+y_logit &lt;- -1 + x1 + x2 + x3 + x4 + 1 * z
 y_p &lt;- exp(y_logit)/(1+exp(y_logit))
 y &lt;- rbinom(n,1,y_p)</code></pre>
 <!-- rnb-source-end -->
@@ -275,20 +281,20 @@ Effects          &emsp;&emsp;Response: <code>y</code></td></tr>
 <td style='padding-left:4ex; text-align: right;'>0</td>
 <td style='padding-left:4ex; text-align: right;'>1</td>
 <td style='padding-left:4ex; text-align: right;'>1</td>
-<td style='padding-left:4ex; text-align: right;'>0.9641</td>
-<td style='padding-left:4ex; text-align: right;'>0.05012</td>
-<td style='padding-left:4ex; text-align: right;'>0.8659</td>
-<td style='padding-left:4ex; text-align: right;'>1.062</td>
+<td style='padding-left:4ex; text-align: right;'>0.7328</td>
+<td style='padding-left:4ex; text-align: right;'>0.04981</td>
+<td style='padding-left:4ex; text-align: right;'>0.6352</td>
+<td style='padding-left:4ex; text-align: right;'>0.8304</td>
 </tr>
 <tr>
 <td style='border-bottom: 2px solid grey; text-align: left;'>&emsp;<em>Odds Ratio</em></td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>0</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.6220</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.0810</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'></td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.3770</td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.893</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1.8870</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.2940</td>
 </tr>
 </tbody>
 </table>
@@ -331,20 +337,20 @@ Effects          &emsp;&emsp;Response: <code>y</code></td></tr>
 <td style='padding-left:4ex; text-align: right;'>0</td>
 <td style='padding-left:4ex; text-align: right;'>1</td>
 <td style='padding-left:4ex; text-align: right;'>1</td>
-<td style='padding-left:4ex; text-align: right;'>1.282</td>
-<td style='padding-left:4ex; text-align: right;'>0.0592</td>
-<td style='padding-left:4ex; text-align: right;'>1.166</td>
-<td style='padding-left:4ex; text-align: right;'>1.398</td>
+<td style='padding-left:4ex; text-align: right;'>0.9645</td>
+<td style='padding-left:4ex; text-align: right;'>0.05786</td>
+<td style='padding-left:4ex; text-align: right;'>0.8511</td>
+<td style='padding-left:4ex; text-align: right;'>1.078</td>
 </tr>
 <tr>
 <td style='border-bottom: 2px solid grey; text-align: left;'>&emsp;<em>Odds Ratio</em></td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>0</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>3.604</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.6240</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'></td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>3.210</td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>4.048</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.3420</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.939</td>
 </tr>
 </tbody>
 </table>
@@ -360,12 +366,12 @@ Effects          &emsp;&emsp;Response: <code>y</code></td></tr>
 <h3>Only covariates + penalty</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsOCldKSx5LCBmYW1pbHkgPSBcImJpbm9taWFsXCIpXG5jb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl1cbmBgYCJ9 -->
-<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-c(1,8)]),y, family = &quot;binomial&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsOCldKSx5LCBmYW1pbHkgPSBcImJpbm9taWFsXCIsIHBlbmFsdHkuZmFjdG9yID0gYygwLDEsMSwxLDEsMSkpXG5jb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl1cbmBgYCJ9 -->
+<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-c(1,8)]),y, family = &quot;binomial&quot;, penalty.factor = c(0,1,1,1,1,1))
 coef(cv.lasso, s = cv.lasso$lambda.min)[2]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEuMjU4MDgyXG4ifQ== -->
-<pre><code>[1] 1.258082</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuOTc1NDYyMVxuIn0= -->
+<pre><code>[1] 0.9754621</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -374,12 +380,12 @@ coef(cv.lasso, s = cv.lasso$lambda.min)[2]</code></pre>
 <h3>Covariates + propensity score + penalty</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC0xXSkseSwgZmFtaWx5ID0gXCJiaW5vbWlhbFwiKVxuY29lZihjdi5sYXNzbywgcyA9IGN2Lmxhc3NvJGxhbWJkYS5taW4pWzJdXG5gYGAifQ== -->
-<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-1]),y, family = &quot;binomial&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC0xXSkseSwgZmFtaWx5ID0gXCJiaW5vbWlhbFwiLCBwZW5hbHR5LmZhY3RvciA9IGMoMCwxLDEsMSwxLDEsMCkpXG5jb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl1cbmBgYCJ9 -->
+<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-1]),y, family = &quot;binomial&quot;, penalty.factor = c(0,1,1,1,1,1,0))
 coef(cv.lasso, s = cv.lasso$lambda.min)[2]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEuMjU4MDgyXG4ifQ== -->
-<pre><code>[1] 1.258082</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuOTU2Nzk2N1xuIn0= -->
+<pre><code>[1] 0.9567967</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -428,20 +434,20 @@ Effects          &emsp;&emsp;Response: <code>y</code></td></tr>
 <td style='padding-left:4ex; text-align: right;'>0</td>
 <td style='padding-left:4ex; text-align: right;'>1</td>
 <td style='padding-left:4ex; text-align: right;'>1</td>
-<td style='padding-left:4ex; text-align: right;'>1.484</td>
-<td style='padding-left:4ex; text-align: right;'>0.04789</td>
-<td style='padding-left:4ex; text-align: right;'>1.390</td>
-<td style='padding-left:4ex; text-align: right;'>1.578</td>
+<td style='padding-left:4ex; text-align: right;'>1.291</td>
+<td style='padding-left:4ex; text-align: right;'>0.04678</td>
+<td style='padding-left:4ex; text-align: right;'>1.200</td>
+<td style='padding-left:4ex; text-align: right;'>1.383</td>
 </tr>
 <tr>
 <td style='border-bottom: 2px solid grey; text-align: left;'>&emsp;<em>Odds Ratio</em></td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>0</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>4.412</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>3.638</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'></td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>4.017</td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>4.846</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>3.319</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>3.987</td>
 </tr>
 </tbody>
 </table>
@@ -484,20 +490,20 @@ Effects          &emsp;&emsp;Response: <code>y</code></td></tr>
 <td style='padding-left:4ex; text-align: right;'>0</td>
 <td style='padding-left:4ex; text-align: right;'>1</td>
 <td style='padding-left:4ex; text-align: right;'>1</td>
-<td style='padding-left:4ex; text-align: right;'>1.803</td>
-<td style='padding-left:4ex; text-align: right;'>0.05476</td>
-<td style='padding-left:4ex; text-align: right;'>1.696</td>
-<td style='padding-left:4ex; text-align: right;'>1.911</td>
+<td style='padding-left:4ex; text-align: right;'>1.560</td>
+<td style='padding-left:4ex; text-align: right;'>0.05291</td>
+<td style='padding-left:4ex; text-align: right;'>1.456</td>
+<td style='padding-left:4ex; text-align: right;'>1.664</td>
 </tr>
 <tr>
 <td style='border-bottom: 2px solid grey; text-align: left;'>&emsp;<em>Odds Ratio</em></td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>0</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>6.070</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>4.758</td>
 <td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'></td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>5.452</td>
-<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>6.758</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>4.290</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>5.278</td>
 </tr>
 </tbody>
 </table>
@@ -513,12 +519,12 @@ Effects          &emsp;&emsp;Response: <code>y</code></td></tr>
 <h3>Only covariates + penalty</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsMyw4KV0pLHksIGZhbWlseSA9IFwiYmlub21pYWxcIilcbmNvZWYoY3YubGFzc28sIHMgPSBjdi5sYXNzbyRsYW1iZGEubWluKVsyXVxuYGBgIn0= -->
-<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-c(1,3,8)]),y, family = &quot;binomial&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsMyw4KV0pLHksIGZhbWlseSA9IFwiYmlub21pYWxcIiwgcGVuYWx0eS5mYWN0b3IgPSBjKDAsMSwxLDEsMSkpXG5jb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl1cbmBgYCJ9 -->
+<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-c(1,3,8)]),y, family = &quot;binomial&quot;, penalty.factor = c(0,1,1,1,1))
 coef(cv.lasso, s = cv.lasso$lambda.min)[2]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEuNzcyNjk2XG4ifQ== -->
-<pre><code>[1] 1.772696</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEuNTQ2MDJcbiJ9 -->
+<pre><code>[1] 1.54602</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -527,12 +533,165 @@ coef(cv.lasso, s = cv.lasso$lambda.min)[2]</code></pre>
 <h3>Covariates + propensity score + penalty</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsMyldKSx5LCBmYW1pbHkgPSBcImJpbm9taWFsXCIpXG5jb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl1cbmBgYCJ9 -->
-<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-c(1,3)]),y, family = &quot;binomial&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsMyldKSx5LCBmYW1pbHkgPSBcImJpbm9taWFsXCIsIHBlbmFsdHkuZmFjdG9yID0gYygwLDEsMSwxLDEsMCkpXG5jb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl1cbmBgYCJ9 -->
+<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-c(1,3)]),y, family = &quot;binomial&quot;, penalty.factor = c(0,1,1,1,1,0))
 coef(cv.lasso, s = cv.lasso$lambda.min)[2]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEuNzcyNjk2XG4ifQ== -->
-<pre><code>[1] 1.772696</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEuNTQ5NDI5XG4ifQ== -->
+<pre><code>[1] 1.549429</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="model-missing-x2" class="section level2">
+<h2>Model (missing x2)</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucF9zY29yZSA8LSBwcmVkaWN0KGxybSh6IH4gIHgxICsgeDMgKyB4NCArIHg1KSlcbmRhdGEgPC0gZGF0YS5mcmFtZSh5LCB6LCB4MSwgeDIsIHgzLCB4NCwgeDUsIHBfc2NvcmUpXG5kZCA8LSBkYXRhZGlzdChkYXRhKVxub3B0aW9ucyhkYXRhZGlzdCA9IFwiZGRcIilcbmBgYCJ9 -->
+<pre class="r"><code>p_score &lt;- predict(lrm(z ~  x1 + x3 + x4 + x5))
+data &lt;- data.frame(y, z, x1, x2, x3, x4, x5, p_score)
+dd &lt;- datadist(data)
+options(datadist = &quot;dd&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="only-propensity-score-2" class="section level3">
+<h3>Only propensity score</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaHRtbChzdW1tYXJ5KGxybSh5fnogKyBwX3Njb3JlLCBkYXRhKSwgeiwgZXN0LmFsbCA9IEZBTFNFKSlcbmBgYCJ9 -->
+<pre class="r"><code>html(summary(lrm(y~z + p_score, data), z, est.all = FALSE))</code></pre>
+<!-- rnb-source-end -->
+
+<!-- rnb-html-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImh0bWwiLCJjaGFyYWN0ZXIiXSwic2l6aW5nUG9saWN5IjpbXX19 -->
+
+<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<thead>
+<tr><td colspan='8' style='text-align: left;'>
+Effects          &emsp;&emsp;Response: <code>y</code></td></tr>
+<tr>
+<th style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'></th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>Low</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>High</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>&Delta;</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>Effect</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>S.E.</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>Lower 0.95</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>Upper 0.95</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style='text-align: left;'>z</td>
+<td style='padding-left:4ex; text-align: right;'>0</td>
+<td style='padding-left:4ex; text-align: right;'>1</td>
+<td style='padding-left:4ex; text-align: right;'>1</td>
+<td style='padding-left:4ex; text-align: right;'>0.9016</td>
+<td style='padding-left:4ex; text-align: right;'>0.04863</td>
+<td style='padding-left:4ex; text-align: right;'>0.8063</td>
+<td style='padding-left:4ex; text-align: right;'>0.9969</td>
+</tr>
+<tr>
+<td style='border-bottom: 2px solid grey; text-align: left;'>&emsp;<em>Odds Ratio</em></td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>0</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.4640</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'></td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.2400</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.7100</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<!-- rnb-html-end -->
+
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="only-covariates-2" class="section level3">
+<h3>Only covariates</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaHRtbChzdW1tYXJ5KGxybSh5IH4geiArIHgxICsgeDMgKyB4NCArIHg1LCBkYXRhKSwgeiwgZXN0LmFsbD0gRkFMU0UpKVxuYGBgIn0= -->
+<pre class="r"><code>html(summary(lrm(y ~ z + x1 + x3 + x4 + x5, data), z, est.all= FALSE))</code></pre>
+<!-- rnb-source-end -->
+
+<!-- rnb-html-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImh0bWwiLCJjaGFyYWN0ZXIiXSwic2l6aW5nUG9saWN5IjpbXX19 -->
+
+<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<thead>
+<tr><td colspan='8' style='text-align: left;'>
+Effects          &emsp;&emsp;Response: <code>y</code></td></tr>
+<tr>
+<th style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'></th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>Low</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>High</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>&Delta;</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>Effect</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>S.E.</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>Lower 0.95</th>
+<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>Upper 0.95</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style='text-align: left;'>z</td>
+<td style='padding-left:4ex; text-align: right;'>0</td>
+<td style='padding-left:4ex; text-align: right;'>1</td>
+<td style='padding-left:4ex; text-align: right;'>1</td>
+<td style='padding-left:4ex; text-align: right;'>1.159</td>
+<td style='padding-left:4ex; text-align: right;'>0.05617</td>
+<td style='padding-left:4ex; text-align: right;'>1.049</td>
+<td style='padding-left:4ex; text-align: right;'>1.269</td>
+</tr>
+<tr>
+<td style='border-bottom: 2px solid grey; text-align: left;'>&emsp;<em>Odds Ratio</em></td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>0</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>1</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>3.188</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'></td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>2.856</td>
+<td style='padding-left:4ex; border-bottom: 2px solid grey; text-align: right;'>3.559</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<!-- rnb-html-end -->
+
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="only-covariates-penalty-2" class="section level3">
+<h3>Only covariates + penalty</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsNCw4KV0pLHksIGZhbWlseSA9IFwiYmlub21pYWxcIiwgcGVuYWx0eS5mYWN0b3IgPSBjKDAsMSwxLDEsMSkpXG5jb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl1cbmBgYCJ9 -->
+<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-c(1,4,8)]),y, family = &quot;binomial&quot;, penalty.factor = c(0,1,1,1,1))
+coef(cv.lasso, s = cv.lasso$lambda.min)[2]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEuMTQ5Nzg0XG4ifQ== -->
+<pre><code>[1] 1.149784</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="covariates-propensity-score-penalty-2" class="section level3">
+<h3>Covariates + propensity score + penalty</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsNCldKSx5LCBmYW1pbHkgPSBcImJpbm9taWFsXCIsIHBlbmFsdHkuZmFjdG9yID0gYygwLDEsMSwxLDEsMCkpXG5jb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl1cbmBgYCJ9 -->
+<pre class="r"><code>cv.lasso&lt;- cv.glmnet(as.matrix(data[,-c(1,4)]),y, family = &quot;binomial&quot;, penalty.factor = c(0,1,1,1,1,0))
+coef(cv.lasso, s = cv.lasso$lambda.min)[2]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEuMTUwNzQ3XG4ifQ== -->
+<pre><code>[1] 1.150747</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -547,7 +706,7 @@ coef(cv.lasso, s = cv.lasso$lambda.min)[2]</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUHJvcGVuc2l0eSBTY29yZSBTaW11bGF0aW9uIgphdXRob3I6ICJMdWN5IEQnQWdvc3Rpbm8gTWNHb3dhbiAmIENpbmR5IENoZW4iCmRhdGU6ICJNYXJjaCA5LCAyMDE3IgpvdXRwdXQ6IAogIGh0bWxfbm90ZWJvb2s6CiAgICB0aGVtZTogam91cm5hbAogICAgdG9jOiB0cnVlCi0tLQoKIyBOb3RlczoKV2UgYXJlIGxvb2tpbmcgYXQgbWV0aG9kcyBmb3IgcHJvcGVuc2l0eSBzY29yZSBhbmFseXNlcyAtIHRoZSBjdXJyZW50IHByb3Bvc2FsIGlzIHRvIGZpdCBhIHByb3BlbnNpdHkgc2NvcmUgbW9kZWwgJiBhZGp1c3QgZm9yIHRoZSBwcm9wZW5zaXR5IHNjb3JlIGFsb25nIHdpdGggYWxsIGNvdmFyaWF0ZXMgd2l0aCB0aGUgTDEgcGVuYWx0eQpgYGB7ciwgaW5jbHVkZSA9IEZBTFNFfQpsaWJyYXJ5KCdybXMnKQpsaWJyYXJ5KCdnbG1uZXQnKQpgYGAKCiMjIEdlbmVyYXRlIGRhdGEKCmBgYHtyfQpuIDwtIDEwMDAwCiNhc3NvY2l0ZWQgd2l0aCBleHBvc3VyZSAmIG91dGNvbWUKeDEgPC0gcm5vcm0obiwwLDEpCngyIDwtIHJiaW5vbShuLDEsLjUpCgojYXNzb2NpYXRlZCB3aXRoIG91dGNvbWUgb25seQp4MyA8LSBybm9ybShuLDAsMSkKeDQgPC0gcmJpbm9tKG4sMSwuNSkKCiNhc3NvY2lhdGVkIHdpdGggZXhwb3N1cmUgb25seQp4NSA8LSBybm9ybShuLDAsMSkKCiNpbmRlcGVuZGVudAp4NiA8LSBybm9ybShuLCAwLCAxKQoKI2V4cG9zdXJlCnpfbG9naXQgPC0gLTAuNSArIHgxICsgeDIgKyB4NQp6X3AgPC0gZXhwKHpfbG9naXQpLygxK2V4cCh6X2xvZ2l0KSkKeiA8LSByYmlub20obiwxLHpfcCkKCiNvdXRjb21lCnlfbG9naXQgPC0gLTEgKyB4MSArIHgyICsgeDMgKyB4NCArIDEuMjUgKiB6CnlfcCA8LSBleHAoeV9sb2dpdCkvKDErZXhwKHlfbG9naXQpKQp5IDwtIHJiaW5vbShuLDEseV9wKQpgYGAKCiMjIFByb3BlbnNpdHkgc2NvcmUKCmBgYHtyfQpwX3Njb3JlIDwtIHByZWRpY3QobHJtKHogfiAgeDEgKyB4MiArIHgzICsgeDQgKyB4NSkpCgpkYXRhIDwtIGRhdGEuZnJhbWUoeSwgeiwgeDEsIHgyLCB4MywgeDQsIHg1LCBwX3Njb3JlKQpkZCA8LSBkYXRhZGlzdChkYXRhKQpvcHRpb25zKGRhdGFkaXN0ID0gImRkIikKYGBgCgoKIyMgTW9kZWwgKGFsbCBjb3ZhcmlhdGVzKQoKIyMjIE9ubHkgcHJvcGVuc2l0eSBzY29yZQpgYGB7cn0KaHRtbChzdW1tYXJ5KGxybSh5fnogKyBwX3Njb3JlLCBkYXRhKSwgeiwgZXN0LmFsbCA9IEZBTFNFKSkKYGBgCiMjIyBPbmx5IGNvdmFyaWF0ZXMKYGBge3J9Cmh0bWwoc3VtbWFyeShscm0oeSB+IHogKyB4MSArIHgyICsgeDMgKyB4NCArIHg1LCBkYXRhKSwgeiwgZXN0LmFsbD0gRkFMU0UpKQpgYGAKCiMjIyBPbmx5IGNvdmFyaWF0ZXMgKyBwZW5hbHR5CmBgYHtyfQpjdi5sYXNzbzwtIGN2LmdsbW5ldChhcy5tYXRyaXgoZGF0YVssLWMoMSw4KV0pLHksIGZhbWlseSA9ICJiaW5vbWlhbCIpCmNvZWYoY3YubGFzc28sIHMgPSBjdi5sYXNzbyRsYW1iZGEubWluKVsyXQpgYGAKCiMjIyBDb3ZhcmlhdGVzICsgcHJvcGVuc2l0eSBzY29yZSArIHBlbmFsdHkKIApgYGB7cn0KY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC0xXSkseSwgZmFtaWx5ID0gImJpbm9taWFsIikKY29lZihjdi5sYXNzbywgcyA9IGN2Lmxhc3NvJGxhbWJkYS5taW4pWzJdCmBgYAoKIyMgTW9kZWwgKG1pc3NpbmcgeDEpCgoKYGBge3J9CnBfc2NvcmUgPC0gcHJlZGljdChscm0oeiB+ICB4MiArIHgzICsgeDQgKyB4NSkpCgpkYXRhIDwtIGRhdGEuZnJhbWUoeSwgeiwgeDEsIHgyLCB4MywgeDQsIHg1LCBwX3Njb3JlKQpkZCA8LSBkYXRhZGlzdChkYXRhKQpvcHRpb25zKGRhdGFkaXN0ID0gImRkIikKYGBgCgojIyMgT25seSBwcm9wZW5zaXR5IHNjb3JlCmBgYHtyfQpodG1sKHN1bW1hcnkobHJtKHl+eiArIHBfc2NvcmUsIGRhdGEpLCB6LCBlc3QuYWxsID0gRkFMU0UpKQpgYGAKIyMjIE9ubHkgY292YXJpYXRlcwpgYGB7cn0KaHRtbChzdW1tYXJ5KGxybSh5IH4geiArIHgyICsgeDMgKyB4NCArIHg1LCBkYXRhKSwgeiwgZXN0LmFsbD0gRkFMU0UpKQpgYGAKCiMjIyBPbmx5IGNvdmFyaWF0ZXMgKyBwZW5hbHR5CmBgYHtyfQpjdi5sYXNzbzwtIGN2LmdsbW5ldChhcy5tYXRyaXgoZGF0YVssLWMoMSwzLDgpXSkseSwgZmFtaWx5ID0gImJpbm9taWFsIikKY29lZihjdi5sYXNzbywgcyA9IGN2Lmxhc3NvJGxhbWJkYS5taW4pWzJdCmBgYAoKIyMjIENvdmFyaWF0ZXMgKyBwcm9wZW5zaXR5IHNjb3JlICsgcGVuYWx0eQogCmBgYHtyfQpjdi5sYXNzbzwtIGN2LmdsbW5ldChhcy5tYXRyaXgoZGF0YVssLWMoMSwzKV0pLHksIGZhbWlseSA9ICJiaW5vbWlhbCIpCmNvZWYoY3YubGFzc28sIHMgPSBjdi5sYXNzbyRsYW1iZGEubWluKVsyXQpgYGAKCgojIyBSZXNvdXJjZXMKMS4gaHR0cDovL2lyLmxpYnJhcnkubG91aXN2aWxsZS5lZHUvY2dpL3ZpZXdjb250ZW50LmNnaT9hcnRpY2xlPTMzOTAmY29udGV4dD1ldGQ=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUHJvcGVuc2l0eSBTY29yZSBTaW11bGF0aW9uIgphdXRob3I6ICJMdWN5IEQnQWdvc3Rpbm8gTWNHb3dhbiAmIENpbmR5IENoZW4iCmRhdGU6ICJNYXJjaCA5LCAyMDE3IgpvdXRwdXQ6IAogIGh0bWxfbm90ZWJvb2s6CiAgICB0aGVtZTogam91cm5hbAogICAgdG9jOiB0cnVlCi0tLQoKIyBOb3RlczoKV2UgYXJlIGxvb2tpbmcgYXQgbWV0aG9kcyBmb3IgcHJvcGVuc2l0eSBzY29yZSBhbmFseXNlcyAtIHRoZSBjdXJyZW50IHByb3Bvc2FsIGlzIHRvIGZpdCBhIHByb3BlbnNpdHkgc2NvcmUgbW9kZWwgJiBhZGp1c3QgZm9yIHRoZSBwcm9wZW5zaXR5IHNjb3JlIGFsb25nIHdpdGggYWxsIGNvdmFyaWF0ZXMgd2l0aCB0aGUgTDEgcGVuYWx0eQpgYGB7ciwgaW5jbHVkZSA9IEZBTFNFfQpsaWJyYXJ5KCdybXMnKQpsaWJyYXJ5KCdnbG1uZXQnKQpgYGAKCiMjIEdlbmVyYXRlIGRhdGEKCmBgYHtyfQpuIDwtIDEwMDAwCiNhc3NvY2l0ZWQgd2l0aCBleHBvc3VyZSAmIG91dGNvbWUKeDEgPC0gcm5vcm0obiwwLDEpCngyIDwtIHJiaW5vbShuLDEsLjUpCgojYXNzb2NpYXRlZCB3aXRoIG91dGNvbWUgb25seQp4MyA8LSBybm9ybShuLDAsMSkKeDQgPC0gcmJpbm9tKG4sMSwuNSkKCiNhc3NvY2lhdGVkIHdpdGggZXhwb3N1cmUgb25seQp4NSA8LSBybm9ybShuLDAsMSkKCiNpbmRlcGVuZGVudAp4NiA8LSBybm9ybShuLCAwLCAxKQoKI2V4cG9zdXJlCnpfbG9naXQgPC0gLTAuNSArIHgxICsgeDIgKyB4NQp6X3AgPC0gZXhwKHpfbG9naXQpLygxK2V4cCh6X2xvZ2l0KSkKeiA8LSByYmlub20obiwxLHpfcCkKCiNvdXRjb21lCnlfbG9naXQgPC0gLTEgKyB4MSArIHgyICsgeDMgKyB4NCArIDEgKiB6CnlfcCA8LSBleHAoeV9sb2dpdCkvKDErZXhwKHlfbG9naXQpKQp5IDwtIHJiaW5vbShuLDEseV9wKQpgYGAKCiMjIFByb3BlbnNpdHkgc2NvcmUKCmBgYHtyfQpwX3Njb3JlIDwtIHByZWRpY3QobHJtKHogfiAgeDEgKyB4MiArIHgzICsgeDQgKyB4NSkpCgpkYXRhIDwtIGRhdGEuZnJhbWUoeSwgeiwgeDEsIHgyLCB4MywgeDQsIHg1LCBwX3Njb3JlKQpkZCA8LSBkYXRhZGlzdChkYXRhKQpvcHRpb25zKGRhdGFkaXN0ID0gImRkIikKYGBgCgoKIyMgTW9kZWwgKGFsbCBjb3ZhcmlhdGVzKQoKIyMjIE9ubHkgcHJvcGVuc2l0eSBzY29yZQpgYGB7cn0KaHRtbChzdW1tYXJ5KGxybSh5fnogKyBwX3Njb3JlLCBkYXRhKSwgeiwgZXN0LmFsbCA9IEZBTFNFKSkKYGBgCiMjIyBPbmx5IGNvdmFyaWF0ZXMKYGBge3J9Cmh0bWwoc3VtbWFyeShscm0oeSB+IHogKyB4MSArIHgyICsgeDMgKyB4NCArIHg1LCBkYXRhKSwgeiwgZXN0LmFsbD0gRkFMU0UpKQpgYGAKCiMjIyBPbmx5IGNvdmFyaWF0ZXMgKyBwZW5hbHR5CmBgYHtyfQpjdi5sYXNzbzwtIGN2LmdsbW5ldChhcy5tYXRyaXgoZGF0YVssLWMoMSw4KV0pLHksIGZhbWlseSA9ICJiaW5vbWlhbCIsIHBlbmFsdHkuZmFjdG9yID0gYygwLDEsMSwxLDEsMSkpCmNvZWYoY3YubGFzc28sIHMgPSBjdi5sYXNzbyRsYW1iZGEubWluKVsyXQoKYGBgCgojIyMgQ292YXJpYXRlcyArIHByb3BlbnNpdHkgc2NvcmUgKyBwZW5hbHR5CiAKYGBge3J9CmN2Lmxhc3NvPC0gY3YuZ2xtbmV0KGFzLm1hdHJpeChkYXRhWywtMV0pLHksIGZhbWlseSA9ICJiaW5vbWlhbCIsIHBlbmFsdHkuZmFjdG9yID0gYygwLDEsMSwxLDEsMSwwKSkKY29lZihjdi5sYXNzbywgcyA9IGN2Lmxhc3NvJGxhbWJkYS5taW4pWzJdCmBgYAoKIyMgTW9kZWwgKG1pc3NpbmcgeDEpCgoKYGBge3J9CnBfc2NvcmUgPC0gcHJlZGljdChscm0oeiB+ICB4MiArIHgzICsgeDQgKyB4NSkpCgpkYXRhIDwtIGRhdGEuZnJhbWUoeSwgeiwgeDEsIHgyLCB4MywgeDQsIHg1LCBwX3Njb3JlKQpkZCA8LSBkYXRhZGlzdChkYXRhKQpvcHRpb25zKGRhdGFkaXN0ID0gImRkIikKYGBgCgojIyMgT25seSBwcm9wZW5zaXR5IHNjb3JlCmBgYHtyfQpodG1sKHN1bW1hcnkobHJtKHl+eiArIHBfc2NvcmUsIGRhdGEpLCB6LCBlc3QuYWxsID0gRkFMU0UpKQpgYGAKIyMjIE9ubHkgY292YXJpYXRlcwpgYGB7cn0KaHRtbChzdW1tYXJ5KGxybSh5IH4geiArIHgyICsgeDMgKyB4NCArIHg1LCBkYXRhKSwgeiwgZXN0LmFsbD0gRkFMU0UpKQpgYGAKCiMjIyBPbmx5IGNvdmFyaWF0ZXMgKyBwZW5hbHR5CmBgYHtyfQpjdi5sYXNzbzwtIGN2LmdsbW5ldChhcy5tYXRyaXgoZGF0YVssLWMoMSwzLDgpXSkseSwgZmFtaWx5ID0gImJpbm9taWFsIiwgcGVuYWx0eS5mYWN0b3IgPSBjKDAsMSwxLDEsMSkpCmNvZWYoY3YubGFzc28sIHMgPSBjdi5sYXNzbyRsYW1iZGEubWluKVsyXQpgYGAKCiMjIyBDb3ZhcmlhdGVzICsgcHJvcGVuc2l0eSBzY29yZSArIHBlbmFsdHkKIApgYGB7cn0KY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsMyldKSx5LCBmYW1pbHkgPSAiYmlub21pYWwiLCBwZW5hbHR5LmZhY3RvciA9IGMoMCwxLDEsMSwxLDApKQpjb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl0KYGBgCgojIyBNb2RlbCAobWlzc2luZyB4MikKCgpgYGB7cn0KcF9zY29yZSA8LSBwcmVkaWN0KGxybSh6IH4gIHgxICsgeDMgKyB4NCArIHg1KSkKCmRhdGEgPC0gZGF0YS5mcmFtZSh5LCB6LCB4MSwgeDIsIHgzLCB4NCwgeDUsIHBfc2NvcmUpCmRkIDwtIGRhdGFkaXN0KGRhdGEpCm9wdGlvbnMoZGF0YWRpc3QgPSAiZGQiKQpgYGAKCiMjIyBPbmx5IHByb3BlbnNpdHkgc2NvcmUKYGBge3J9Cmh0bWwoc3VtbWFyeShscm0oeX56ICsgcF9zY29yZSwgZGF0YSksIHosIGVzdC5hbGwgPSBGQUxTRSkpCmBgYAoKIyMjIE9ubHkgY292YXJpYXRlcwpgYGB7cn0KaHRtbChzdW1tYXJ5KGxybSh5IH4geiArIHgxICsgeDMgKyB4NCArIHg1LCBkYXRhKSwgeiwgZXN0LmFsbD0gRkFMU0UpKQpgYGAKCiMjIyBPbmx5IGNvdmFyaWF0ZXMgKyBwZW5hbHR5CmBgYHtyfQpjdi5sYXNzbzwtIGN2LmdsbW5ldChhcy5tYXRyaXgoZGF0YVssLWMoMSw0LDgpXSkseSwgZmFtaWx5ID0gImJpbm9taWFsIiwgcGVuYWx0eS5mYWN0b3IgPSBjKDAsMSwxLDEsMSkpCmNvZWYoY3YubGFzc28sIHMgPSBjdi5sYXNzbyRsYW1iZGEubWluKVsyXQpgYGAKCiMjIyBDb3ZhcmlhdGVzICsgcHJvcGVuc2l0eSBzY29yZSArIHBlbmFsdHkKIApgYGB7cn0KY3YubGFzc288LSBjdi5nbG1uZXQoYXMubWF0cml4KGRhdGFbLC1jKDEsNCldKSx5LCBmYW1pbHkgPSAiYmlub21pYWwiLCBwZW5hbHR5LmZhY3RvciA9IGMoMCwxLDEsMSwxLDApKQpjb2VmKGN2Lmxhc3NvLCBzID0gY3YubGFzc28kbGFtYmRhLm1pbilbMl0KYGBgCgojIyBSZXNvdXJjZXMKMS4gaHR0cDovL2lyLmxpYnJhcnkubG91aXN2aWxsZS5lZHUvY2dpL3ZpZXdjb250ZW50LmNnaT9hcnRpY2xlPTMzOTAmY29udGV4dD1ldGQ=</div>
 
 
 
