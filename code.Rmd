@@ -1,0 +1,117 @@
+---
+title: "Propensity Score Simulation"
+author: "Lucy D'Agostino McGowan & Cindy Chen"
+date: "March 9, 2017"
+output: 
+  html_notebook:
+    theme: journal
+    toc: true
+---
+
+# Notes:
+We are looking at methods for propensity score analyses - the current proposal is to fit a propensity score model & adjust for the propensity score along with all covariates with the L1 penalty
+```{r, include = FALSE}
+library('rms')
+library('glmnet')
+```
+
+## Generate data
+
+```{r}
+n <- 10000
+#associted with exposure & outcome
+x1 <- rnorm(n,0,1)
+x2 <- rbinom(n,1,.5)
+
+#associated with outcome only
+x3 <- rnorm(n,0,1)
+x4 <- rbinom(n,1,.5)
+
+#associated with exposure only
+x5 <- rnorm(n,0,1)
+
+#independent
+x6 <- rnorm(n, 0, 1)
+
+#exposure
+z_logit <- -0.5 + x1 + x2 + x5
+z_p <- exp(z_logit)/(1+exp(z_logit))
+z <- rbinom(n,1,z_p)
+
+#outcome
+y_logit <- -1 + x1 + x2 + x3 + x4 + 1.25 * z
+y_p <- exp(y_logit)/(1+exp(y_logit))
+y <- rbinom(n,1,y_p)
+```
+
+## Propensity score
+
+```{r}
+p_score <- predict(lrm(z ~  x1 + x2 + x3 + x4 + x5))
+
+data <- data.frame(y, z, x1, x2, x3, x4, x5, p_score)
+dd <- datadist(data)
+options(datadist = "dd")
+```
+
+
+## Model (all covariates)
+
+### Only propensity score
+```{r}
+html(summary(lrm(y~z + p_score, data), z, est.all = FALSE))
+```
+### Only covariates
+```{r}
+html(summary(lrm(y ~ z + x1 + x2 + x3 + x4 + x5, data), z, est.all= FALSE))
+```
+
+### Only covariates + penalty
+```{r}
+cv.lasso<- cv.glmnet(as.matrix(data[,-c(1,8)]),y, family = "binomial")
+coef(cv.lasso, s = cv.lasso$lambda.min)[2]
+```
+
+### Covariates + propensity score + penalty
+ 
+```{r}
+cv.lasso<- cv.glmnet(as.matrix(data[,-1]),y, family = "binomial")
+coef(cv.lasso, s = cv.lasso$lambda.min)[2]
+```
+
+## Model (missing x1)
+
+
+```{r}
+p_score <- predict(lrm(z ~  x2 + x3 + x4 + x5))
+
+data <- data.frame(y, z, x1, x2, x3, x4, x5, p_score)
+dd <- datadist(data)
+options(datadist = "dd")
+```
+
+### Only propensity score
+```{r}
+html(summary(lrm(y~z + p_score, data), z, est.all = FALSE))
+```
+### Only covariates
+```{r}
+html(summary(lrm(y ~ z + x2 + x3 + x4 + x5, data), z, est.all= FALSE))
+```
+
+### Only covariates + penalty
+```{r}
+cv.lasso<- cv.glmnet(as.matrix(data[,-c(1,3,8)]),y, family = "binomial")
+coef(cv.lasso, s = cv.lasso$lambda.min)[2]
+```
+
+### Covariates + propensity score + penalty
+ 
+```{r}
+cv.lasso<- cv.glmnet(as.matrix(data[,-c(1,3)]),y, family = "binomial")
+coef(cv.lasso, s = cv.lasso$lambda.min)[2]
+```
+
+
+## Resources
+1. http://ir.library.louisville.edu/cgi/viewcontent.cgi?article=3390&context=etd
